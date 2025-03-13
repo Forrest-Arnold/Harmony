@@ -19,7 +19,7 @@ struct LoginView: View {
     @State private var rotate = false
     
     var body: some View {
-            NavigationView {
+            NavigationStack {
                 ZStack {
                     Color.black
                     ZStack {
@@ -30,15 +30,6 @@ struct LoginView: View {
                             .offset(y: signInPage ? -340 : -320)
                             .animation(.easeInOut, value: signInPage)
                         
-                        // Using NavigationLink to navigate to HarmonyHome when userIsLoggedIn is true
-                        NavigationLink(
-                            destination: HarmonyHome(),
-                            isActive: $userIsLoggedIn
-                        ) {
-                            EmptyView() // Empty view that will trigger the navigation
-                        }
-                        
-                        // Show login or register screens based on user login state and the signInPage flag
                         if signInPage {
                             LoginScreen(email: $email, password: $password, signInPage: $signInPage, colorFlip: $colorFlip, rotate: $rotate, loginAction: login)
                         } else {
@@ -47,6 +38,9 @@ struct LoginView: View {
                     }
                 }
                 .ignoresSafeArea()
+                .navigationDestination(isPresented: $userIsLoggedIn) {
+                    HarmonyHome()
+                }
             }
         }
     
