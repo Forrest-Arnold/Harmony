@@ -1,0 +1,73 @@
+//
+//  Toolbar.swift
+//  Harmony
+//
+//  Created by Forrest Kalani Arnold on 3/13/25.
+//
+
+import SwiftUI
+
+struct Toolbar: View {
+    var body: some View {
+        ZStack {
+            VStack {
+                Spacer(minLength: 740)
+                HStack {
+                    Spacer()
+                    Button {
+                        // Navigate to HarmonyHome
+                    } label: {
+                        VStack {
+                            Image(systemName: "house.fill")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                            Text("Home")
+                                .font(.footnote)
+                        }
+                        .padding(10)
+                        .padding(.bottom, 16)
+                        .foregroundStyle(Color.accentColor2)
+                    }
+                    Spacer(minLength: 60)
+                    Button {
+                        // Navigate to Notifications
+                    } label: {
+                        VStack {
+                            Image(systemName: "bell.fill")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                            Text("Notifications")
+                                .font(.footnote)
+                        }
+                        .padding(10)
+                        .padding(.bottom, 16)
+                        .foregroundStyle(Color.accentColor2)
+                    }
+                    Spacer(minLength: 60)
+                    Button {
+                        // Navigate to your profile
+                    } label: {
+                        VStack {
+                            Image(systemName: "person.fill")
+                                .resizable()
+                                .frame(width: 25, height: 25)
+                            Text("You")
+                                .font(.footnote)
+                        }
+                        .padding(10)
+                        .padding(.bottom, 16)
+                        .foregroundStyle(Color.accentColor2)
+                    }
+                    Spacer()
+                }
+//                .padding()
+                .background(Color.tertiaryColor)
+            }
+            .frame(maxWidth: .infinity)
+        }
+    }
+}
+
+#Preview {
+    Toolbar()
+}

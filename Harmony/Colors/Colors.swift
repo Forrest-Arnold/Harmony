@@ -30,5 +30,8 @@ extension Color {
     static let tertiaryColor = Color(hex: "#B6465F")
     static let accentColor1 = Color(hex: "#DA9F93")
     static let accentColor2 = Color(hex: "#EBD4CB")
+    static let themeGray1 = Color(hex: "#2D2D2D")
+    static let themeGray2 = Color(hex: "#6B6B6B")
+    static let themeGray3 = Color(hex: "#D4D4D4")
 }
 

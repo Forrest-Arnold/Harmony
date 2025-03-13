@@ -20,12 +20,13 @@ struct HarmonyHome: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
+            Toolbar()
         }
+        .padding(.top, 20)
     }
 }
 
 struct TopBarView: View {
-    @State private var searchBarText = ""
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 3) {
@@ -36,36 +37,10 @@ struct TopBarView: View {
                     .scaleEffect(x: 0.6)
             }
             HStack {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 20)
-                        .frame(width: 200, height: 30)
-                        .foregroundStyle(.white)
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundStyle(.gray)
-                            .opacity(0.4)
-                        TextField("Search", text: $searchBarText)
-                    }
-                    .padding(.leading, 16)
-                }
+                SearchBarView()
                 HStack(spacing: 20) {
-                    ZStack {
-                        Ellipse()
-                            .frame(width: 30, height: 30)
-                            .foregroundStyle(.gray)
-                        Image(systemName: "person.2.badge.plus.fill")
-                            .resizable()
-                            .frame(width: 25, height: 18)
-                            .padding(.leading, 3)
-                            .padding(.top, 2)
-                    }
-                    ZStack {
-                        Ellipse()
-                            .foregroundStyle(.gray)
-                        Image(systemName: "calendar")
-                    }
-                    .frame(width: 30, height: 30)
-                    .offset(x: -10)
+                    InviteFriendView()
+                    EventView()
                 }
             }
             Rectangle()
@@ -77,6 +52,62 @@ struct TopBarView: View {
         }
         .padding(.leading, 20)
         .padding(.top, 20)
+    }
+}
+
+struct SearchBarView: View {
+    @State private var searchBarText = ""
+    
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .frame(width: 200, height: 30)
+                .foregroundStyle(Color.accentColor2)
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundStyle(.gray)
+                    .opacity(0.4)
+                TextField("Search", text: $searchBarText)
+            }
+            .padding(.leading, 16)
+        }
+    }
+}
+
+struct InviteFriendView: View {
+    var body: some View {
+        Button {
+            // Invite person to server
+        } label: {
+            ZStack {
+                Ellipse()
+                    .frame(width: 30, height: 30)
+                    .foregroundStyle(Color.accentColor2)
+                Image(systemName: "person.2.badge.plus.fill")
+                    .resizable()
+                    .frame(width: 25, height: 18)
+                    .padding(.leading, 3)
+                    .padding(.top, 2)
+            }
+        }
+        .foregroundStyle(.black)
+    }
+}
+
+struct EventView: View {
+    var body: some View {
+        Button {
+            // Open events
+        } label: {
+            ZStack {
+                Ellipse()
+                    .foregroundStyle(Color.accentColor2)
+                Image(systemName: "calendar")
+            }
+            .frame(width: 30, height: 30)
+            .offset(x: -10)
+            .foregroundStyle(.black)
+        }
     }
 }
 
@@ -112,10 +143,15 @@ struct TextChannelsView: View {
             if openTextChannels {
                 VStack(alignment: .leading, spacing: 5) {
                     ForEach(0..<channels, id: \.self) { channel in
-                        Text("# General \(channel)")
-                            .padding(.vertical, 5)
-                            .font(.system(size: 18))
-                            .bold()
+                        Button {
+                            // Send to this channel's chat
+                        } label: {
+                            Text("# General \(channel)")
+                                .padding(.vertical, 5)
+                                .font(.system(size: 18))
+                                .bold()
+                                .foregroundStyle(.black)
+                        }
                     }
                 }
                 .transition(.opacity)
@@ -149,10 +185,15 @@ struct VoiceChannelsView: View {
             if openVoiceChannels {
                 VStack(alignment: .leading, spacing: 5) {
                     ForEach(0..<channels, id: \.self) { channel in
-                        Text("# Voice \(channel)")
-                            .padding(.vertical, 5)
-                            .font(.system(size: 18))
-                            .bold()
+                        Button {
+                            // Make new voicecall or enter existing one
+                        } label: {
+                            Text("# Voice \(channel)")
+                                .padding(.vertical, 5)
+                                .font(.system(size: 18))
+                                .bold()
+                                .foregroundStyle(.black)
+                        }
                     }
                 }
                 .transition(.opacity)
@@ -165,7 +206,7 @@ struct VoiceChannelsView: View {
 
 struct SideBarView: View {
     @State private var servers = 13
-
+    
     var body: some View {
         ZStack {
             Rectangle()
@@ -178,7 +219,7 @@ struct SideBarView: View {
                     ZStack {
                         Ellipse()
                             .frame(width: 56, height: 56)
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(Color.accentColor1)
                         Image(systemName: "message.fill")
                             .resizable()
                             .frame(width: 30, height: 30)
@@ -192,9 +233,10 @@ struct SideBarView: View {
                     ForEach(0..<servers, id: \.self) { _ in
                         Ellipse()
                             .frame(width: 56, height: 56)
-                            .foregroundStyle(.gray)
+                            .foregroundStyle(Color.accentColor1)
                     }
                 }
+                .padding(.bottom, 100)
                 .padding(.top, 10)
                 .padding(.leading, 10)
             }
@@ -209,11 +251,10 @@ struct BackgroundView: View {
             Rectangle()
                 .foregroundStyle(Color.primaryColor)
                 .ignoresSafeArea()
-            
             RoundedRectangle(cornerRadius: 20)
                 .foregroundStyle(Color.secondaryColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading, 96) // Ensuring it's positioned correctly
+                .padding(.leading, 96)
                 .padding(.top, 40)
                 .scaleEffect(x: 1.12, y: 1.12)
         }
