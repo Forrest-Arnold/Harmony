@@ -14,9 +14,8 @@ struct Toolbar: View {
                 Spacer(minLength: 740)
                 HStack {
                     Spacer()
-                    Button {
-                        // Navigate to HarmonyHome
-                    } label: {
+                    
+                    NavigationLink(destination: HarmonyHome()) {
                         VStack {
                             Image(systemName: "house.fill")
                                 .resizable()
@@ -28,10 +27,10 @@ struct Toolbar: View {
                         .padding(.bottom, 16)
                         .foregroundStyle(Color.accentColor2)
                     }
+                    
                     Spacer(minLength: 60)
-                    Button {
-                        // Navigate to Notifications
-                    } label: {
+                    
+//                    NavigationLink(destination: NotificationsView()) {
                         VStack {
                             Image(systemName: "bell.fill")
                                 .resizable()
@@ -42,11 +41,11 @@ struct Toolbar: View {
                         .padding(10)
                         .padding(.bottom, 16)
                         .foregroundStyle(Color.accentColor2)
-                    }
+//                    }
+                    
                     Spacer(minLength: 60)
-                    Button {
-                        // Navigate to your profile
-                    } label: {
+                    
+                    NavigationLink(destination: Profile()) {
                         VStack {
                             Image(systemName: "person.fill")
                                 .resizable()
@@ -58,9 +57,9 @@ struct Toolbar: View {
                         .padding(.bottom, 16)
                         .foregroundStyle(Color.accentColor2)
                     }
+                    
                     Spacer()
                 }
-//                .padding()
                 .background(Color.tertiaryColor)
             }
             .frame(maxWidth: .infinity)

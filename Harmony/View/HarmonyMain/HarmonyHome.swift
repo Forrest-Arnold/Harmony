@@ -16,6 +16,7 @@ struct HarmonyHome: View {
                 VStack(spacing: 0) {
                     TopBarView()
                     ChannelsView()
+                        .opacity(0.8)
                     Spacer()
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -23,6 +24,7 @@ struct HarmonyHome: View {
             Toolbar()
         }
         .padding(.top, 20)
+        .navigationBarBackButtonHidden(true)
     }
 }
 
@@ -225,6 +227,8 @@ struct SideBarView: View {
                             .frame(width: 30, height: 30)
                             .padding(.leading, 3)
                             .padding(.top, 4)
+                            .foregroundStyle(Color.primaryColor)
+                            .opacity(0.9)
                     }
                     Rectangle()
                         .frame(width: 40, height: 2)
