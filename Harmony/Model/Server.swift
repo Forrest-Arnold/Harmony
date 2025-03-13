@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+struct Server: Identifiable {
+    var id = UUID()
+    var name: String
+    var image: String
+    var users: [User]
+}

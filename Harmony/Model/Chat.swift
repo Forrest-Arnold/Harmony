@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+struct Chat: Identifiable {
+    var id = UUID()
+    var chats: [String]
+}
