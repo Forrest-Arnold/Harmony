@@ -13,6 +13,9 @@ struct LoginView: View {
     
     @State private var email = ""
     @State private var password = ""
+    @State private var username = ""
+    @State private var firstName = ""
+    @State private var lastName = ""
     @State private var signInPage = true
     @State private var userIsLoggedIn = false
     @State private var colorFlip = true
@@ -33,7 +36,7 @@ struct LoginView: View {
                         if signInPage {
                             LoginScreen(email: $email, password: $password, signInPage: $signInPage, colorFlip: $colorFlip, rotate: $rotate, loginAction: login)
                         } else {
-                            RegisterScreen(email: $email, password: $password, signInPage: $signInPage, colorFlip: $colorFlip, rotate: $rotate, registerAction: register)
+                        RegisterScreen(email: $email, password: $password, username: $username, firstName: $firstName, lastName: $lastName, signInPage: $signInPage, colorFlip: $colorFlip, rotate: $rotate, registerAction: register)
                         }
                     }
                 }
@@ -107,25 +110,35 @@ struct LoginScreen: View {
 struct RegisterScreen: View {
     @Binding var email: String
     @Binding var password: String
+    @Binding var username: String
+    @Binding var firstName: String
+    @Binding var lastName: String
     @Binding var signInPage: Bool
     @Binding var colorFlip: Bool
     @Binding var rotate: Bool
+    
     var registerAction: () -> Void
     
     var body: some View {
-        VStack(spacing: 20) {
-            AuthHeaderView(title: "Harmony")
-                .offset(y: -130)
+        VStack(spacing: 16) {
             Text("Create an account")
                 .foregroundStyle(.white)
                 .font(.system(size: 36, weight: .bold, design: .rounded))
                 .offset(x: -36, y: -100)
+                .padding(.top, 200)
             
-            AuthTextField(placeholder: "Email", text: $email)
-            AuthTextField(placeholder: "Password", text: $password, isSecure: true)
+            VStack {
+                AuthTextField(placeholder: "Email", text: $email)
+                AuthTextField(placeholder: "Password", text: $password, isSecure: true)
+                AuthTextField(placeholder: "Username", text: $username)
+                AuthTextField(placeholder: "First Name", text: $firstName)
+                AuthTextField(placeholder: "Last Name", text: $lastName)
+            }
+            .padding()
+            .background(RoundedRectangle(cornerRadius: 20).foregroundStyle(.black).opacity(0.7))
             
             AuthButton(title: "Sign up", colorFlip: $colorFlip, action: registerAction)
-                .offset(y: 100)
+                .offset(y: 30)
             
             Button {
                 signInPage.toggle()
@@ -136,7 +149,8 @@ struct RegisterScreen: View {
                     .bold()
                     .foregroundStyle(.white)
             }
-            .offset(y: 110)
+            .offset(y: 50)
+            .padding(.bottom, 100)
         }
         .frame(width: 350)
     }

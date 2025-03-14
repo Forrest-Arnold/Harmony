@@ -6,14 +6,16 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct User: Identifiable {
-    var id = UUID()
+    @DocumentID var id: String?
     var email: String
     var username: String
     var image: String
     var firstName: String
     var lastName: String
     var onlineStatus: String
-    var friends: [User]
+    var friends: [String]
+    var servers: [String]
 }

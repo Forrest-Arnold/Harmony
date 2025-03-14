@@ -30,7 +30,6 @@ struct Toolbar: View {
                     
                     Spacer(minLength: 60)
                     
-//                    NavigationLink(destination: NotificationsView()) {
                         VStack {
                             Image(systemName: "bell.fill")
                                 .resizable()
@@ -41,7 +40,6 @@ struct Toolbar: View {
                         .padding(10)
                         .padding(.bottom, 16)
                         .foregroundStyle(Color.accentColor2)
-//                    }
                     
                     Spacer(minLength: 60)
                     

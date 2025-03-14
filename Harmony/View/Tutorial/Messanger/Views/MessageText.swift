@@ -15,7 +15,6 @@ struct MessageText: View {
                 .resizable()
                 .frame(width: 50, height: 50)
                 .padding(.bottom, 10)
-//                .padding(.leading, -10)
             
             VStack(alignment: .leading, spacing: -10) {
                 

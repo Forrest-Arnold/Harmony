@@ -202,7 +202,7 @@ struct VoiceChannelsView: View {
             }
         }
         .padding(.top, 20)
-        .padding(.trailing, 150)
+        .padding(.trailing, 140)
     }
 }
 
