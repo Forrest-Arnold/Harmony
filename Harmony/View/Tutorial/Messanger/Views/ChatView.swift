@@ -8,15 +8,28 @@
 import SwiftUI
 
 struct ChatView: View {
-    var messageArray = ["Hello how ya", "message tests", "golden boy"]
+    @StateObject var messagesManager = MessagesManager()
+    
     var body: some View {
-        TitleRow()
-        
-        ScrollView {
-            ForEach(messageArray, id: \.self) { text in
-                MessageText(message: Message(id: "12345", text: text, timestamp: Date()))
+        VStack {
+            VStack {
+                TitleRow()
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        ForEach(messagesManager.messages, id: \.id) { message in
+                            MessageText(message: message)
+                        }
+                    }
+                    .onChange(of: messagesManager.lastMessageId) { _, newValue in
+                        withAnimation {
+                            proxy.scrollTo(newValue, anchor: .bottom)
+                        }
+                    }
+                }
             }
         }
+        MessageField()
+            .environmentObject(messagesManager)
     }
 }
 

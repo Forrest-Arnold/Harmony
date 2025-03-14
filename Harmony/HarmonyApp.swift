@@ -17,7 +17,8 @@ struct HarmonyApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            ChatView()
+//            LoginView()
         }
     }
 }

@@ -30,7 +30,7 @@ struct ServerPhoto: View {
                 Image(systemName: "magnifyingglass")
             }
         }
-        .padding(.top, 20)
+//        .padding(.top, 10)
         .padding(10)
     }
 }
