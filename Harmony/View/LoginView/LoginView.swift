@@ -108,6 +108,7 @@ struct LoginScreen: View {
 }
 
 struct RegisterScreen: View {
+    @StateObject var userManager = UserManager()
     @Binding var email: String
     @Binding var password: String
     @Binding var username: String
@@ -141,6 +142,7 @@ struct RegisterScreen: View {
                 .offset(y: 30)
             
             Button {
+                userManager.createUser(email: email, password: password, username: username, firstName: firstName, lastName: lastName)
                 signInPage.toggle()
                 colorFlip.toggle()
                 rotate.toggle()

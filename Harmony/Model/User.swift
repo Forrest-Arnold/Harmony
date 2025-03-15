@@ -11,6 +11,7 @@ import FirebaseFirestore
 struct User: Identifiable {
     @DocumentID var id: String?
     var email: String
+    var password: String
     var username: String
     var image: String
     var firstName: String

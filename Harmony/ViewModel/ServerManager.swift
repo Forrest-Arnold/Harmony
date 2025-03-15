@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+class ServerManager: ObservableObject {
+    
+    // textField to add server name
+    func createServer(name: String) {
+        
+    }
+}
