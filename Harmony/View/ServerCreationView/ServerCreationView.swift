@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ServerCreationView: View {
-    @StateObject var userManager = UserManager()
+    @EnvironmentObject var userManager: UserManager
     @StateObject var serverManager = ServerManager()
     @Binding var serverText: String
     @State var showAlert = false

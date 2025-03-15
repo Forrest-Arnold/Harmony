@@ -10,6 +10,7 @@ import Firebase
 
 @main
 struct HarmonyApp: App {
+    @StateObject var userManager = UserManager()
     
     init() {
         FirebaseApp.configure()
@@ -17,6 +18,7 @@ struct HarmonyApp: App {
     var body: some Scene {
         WindowGroup {
             LoginView()
+                .environmentObject(userManager)
 //            ServerCreationView(serverText: .constant(""))
         }
     }
