@@ -38,5 +38,6 @@ struct MessageText: View {
 }
 
 #Preview {
-    MessageText(message: Message(id: "12345", text: "Ah snap thats a text, here we go again, ah snap thats a text, here we go again", timestamp: Date()))
+    // FIX WHEN CAN
+//    MessageText(message: Message(id: "12345", text: "Ah snap thats a text, here we go again, ah snap thats a text, here we go again", timestamp: Date()))
 }

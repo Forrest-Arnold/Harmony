@@ -8,15 +8,15 @@
 import Foundation
 import FirebaseFirestore
 
-struct User: Identifiable {
+struct User: Identifiable, Codable {
     @DocumentID var id: String?
     var email: String
-    var password: String
     var username: String
-    var image: String
+    var image: String?
     var firstName: String
     var lastName: String
-    var onlineStatus: String
-    var friends: [String]
-    var servers: [String]
+    var onlineStatus: String?
+    // use user id's for checking both friends and servers and store them there
+    var friends: [String]?
+    var servers: [String]?
 }

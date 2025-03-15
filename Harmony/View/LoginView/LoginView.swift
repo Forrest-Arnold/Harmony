@@ -7,9 +7,11 @@
 import SwiftUI
 import Firebase
 import FirebaseAuth
+import FirebaseFirestore
 
 struct LoginView: View {
     @StateObject var dataManager = DataManager()
+    @StateObject var userManager = UserManager()
     
     @State private var email = ""
     @State private var password = ""
@@ -17,58 +19,98 @@ struct LoginView: View {
     @State private var firstName = ""
     @State private var lastName = ""
     @State private var signInPage = true
-    @State private var userIsLoggedIn = false
     @State private var colorFlip = true
     @State private var rotate = false
     
     var body: some View {
-            NavigationStack {
+        NavigationStack {
+            ZStack {
+                Color.black
                 ZStack {
-                    Color.black
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 30, style: .continuous)
-                            .foregroundStyle(.linearGradient(colors: [colorFlip ? Color.tertiaryColor : Color.primary, colorFlip ? Color.secondaryColor : Color.accentColor2], startPoint: .topLeading, endPoint: .bottomTrailing))
-                            .frame(width: 1100, height: 400)
-                            .rotationEffect(.degrees(rotate ? 133 : 135))
-                            .offset(y: signInPage ? -340 : -320)
-                            .animation(.easeInOut, value: signInPage)
-                        
-                        if signInPage {
-                            LoginScreen(email: $email, password: $password, signInPage: $signInPage, colorFlip: $colorFlip, rotate: $rotate, loginAction: login)
-                        } else {
+                    RoundedRectangle(cornerRadius: 30, style: .continuous)
+                        .foregroundStyle(.linearGradient(colors: [colorFlip ? Color.tertiaryColor : Color.primary, colorFlip ? Color.secondaryColor : Color.accentColor2], startPoint: .topLeading, endPoint: .bottomTrailing))
+                        .frame(width: 1100, height: 400)
+                        .rotationEffect(.degrees(rotate ? 133 : 135))
+                        .offset(y: signInPage ? -340 : -320)
+                        .animation(.easeInOut, value: signInPage)
+                    
+                    if signInPage {
+                        LoginScreen(email: $email, password: $password, signInPage: $signInPage, colorFlip: $colorFlip, rotate: $rotate, loginAction: login)
+                    } else {
                         RegisterScreen(email: $email, password: $password, username: $username, firstName: $firstName, lastName: $lastName, signInPage: $signInPage, colorFlip: $colorFlip, rotate: $rotate, registerAction: register)
-                        }
                     }
                 }
-                .ignoresSafeArea()
-                .navigationDestination(isPresented: $userIsLoggedIn) {
-                    HarmonyHome()
-                }
             }
-        }
-    
-    func login() {
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-            if let error = error {
-                print("Login failed \(error.localizedDescription)")
-            } else {
-                print("Login successful! User ID: \(authResult?.user.uid ?? "Unknown")")
-                userIsLoggedIn = true
+            .ignoresSafeArea()
+            
+            // Navigate when userIsLoggedIn is true
+            .navigationDestination(isPresented: $userManager.userIsLoggedIn) {
+                HarmonyHome()
             }
         }
     }
-    
+    func login() {
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                print("Login failed: \(error.localizedDescription)")
+            } else if let user = authResult?.user {
+                print("Login successful! User ID: \(user.uid)")
+                
+                
+                
+                // Fetch current user data after successful login
+                userManager.setCurrentUser { fetchedUser in
+                    if let fetchedUser = fetchedUser {
+                        print("Current user fetched: \(fetchedUser)")
+                    } else {
+                        print("Failed to fetch current user")
+                    }
+                }
+            }
+        }
+    }
+
+
     func register() {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
-            if error != nil {
-                print(error!.localizedDescription)
-            } else {
-                userIsLoggedIn = true
+            if let error = error {
+                print("Registration failed: \(error.localizedDescription)")
+            } else if let user = result?.user {
+                print("User registered successfully! UID: \(user.uid)")
+                
+                // Create user document in Firestore
+                let db = Firestore.firestore()
+                let userRef = db.collection("users").document(user.uid)
+                
+                let userData: [String: Any] = [
+                    "uid": user.uid,
+                    "email": email,
+                    "username": username,
+                    "firstName": firstName,
+                    "lastName": lastName,
+                    "createdAt": Timestamp()
+                ]
+                
+                userRef.setData(userData) { error in
+                    if let error = error {
+                        print("Error saving user to Firestore: \(error.localizedDescription)")
+                    } else {
+                        print("User successfully added to Firestore!")
+                        
+                        // Fetch current user after successful registration
+                        userManager.setCurrentUser { user in
+                            if let user = user {
+                                print("Current user fetched: \(user)")
+                            } else {
+                                print("Failed to fetch current user")
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
-
 struct LoginScreen: View {
     @Binding var email: String
     @Binding var password: String
@@ -142,7 +184,6 @@ struct RegisterScreen: View {
                 .offset(y: 30)
             
             Button {
-                userManager.createUser(email: email, password: password, username: username, firstName: firstName, lastName: lastName)
                 signInPage.toggle()
                 colorFlip.toggle()
                 rotate.toggle()

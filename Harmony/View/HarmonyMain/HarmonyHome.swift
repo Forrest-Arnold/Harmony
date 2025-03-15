@@ -208,6 +208,8 @@ struct VoiceChannelsView: View {
 
 struct SideBarView: View {
     @State private var servers = 13
+    @State private var serverText: String = ""
+
     
     var body: some View {
         ZStack {
@@ -238,6 +240,21 @@ struct SideBarView: View {
                         Ellipse()
                             .frame(width: 56, height: 56)
                             .foregroundStyle(Color.accentColor1)
+                    }
+                    NavigationLink {
+                        ServerCreationView(serverText: $serverText)
+                    } label: {
+                        ZStack {
+                            Ellipse()
+                                .frame(width: 56, height: 56)
+                                .foregroundStyle(Color.accentColor1)
+                            Image(systemName: "plus")
+                                .resizable()
+                                .frame(width: 22, height: 22)
+                                .padding(.leading, 2)
+                                .foregroundStyle(Color.primaryColor)
+                                .opacity(0.9)
+                        }
                     }
                 }
                 .padding(.bottom, 100)

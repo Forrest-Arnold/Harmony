@@ -11,5 +11,4 @@ struct Channel: Identifiable {
     var id = UUID()
     var name: String
     var isVoiceChannel: Bool
-    var chat: Chat
 }

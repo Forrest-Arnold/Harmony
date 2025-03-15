@@ -6,9 +6,12 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct Message: Identifiable, Codable {
-    var id: String
+    @DocumentID var id: String?
+    var messageGroupId: String
+    var senderId: String
     var text: String
     var timestamp: Date
 }

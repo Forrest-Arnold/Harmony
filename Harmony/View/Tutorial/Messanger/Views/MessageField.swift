@@ -17,7 +17,9 @@ struct MessageField: View {
             
             Button {
                 print("Message sent!")
-                messagesManager.sendMessage(text: message)
+                
+                // FIX WHEN CAN
+//                messagesManager.sendMessage(text: message)
                 message = ""
             } label: {
                 Image(systemName: "paperplane.fill")

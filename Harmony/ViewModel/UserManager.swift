@@ -10,41 +10,46 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class UserManager: ObservableObject {
-    func createUser(email: String, password: String, username: String, firstName: String, lastName: String) {
-        let db = Firestore.firestore()
-
-        // ✅ Create user in Firebase Authentication
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            if let error = error {
-                print("Error creating Firebase Auth user: \(error.localizedDescription)")
-                return
-            }
-            
-            guard let user = authResult?.user else {
-                print("Error: Firebase user is nil after account creation.")
-                return
-            }
-
-            // ✅ Create a user document in Firestore
-            let userRef = db.collection("users").document(user.uid)
-            let userData: [String: Any] = [
-                "id": user.uid,
-                "email": email,
-                "username": username,
-                "image": "profile_pic_url", // Placeholder for now
-                "firstName": firstName,
-                "lastName": lastName,
-                "onlineStatus": "online",
-                "friends": [] // Empty array for now
-            ]
-
-            userRef.setData(userData, merge: true) { error in
+    @Published var currentUser: User?
+    @Published var userIsLoggedIn: Bool = false  // Track login state
+    private var db = Firestore.firestore()
+    
+    // This is the setCurrentUser function
+    func setCurrentUser(completion: @escaping (User?) -> Void) {
+        if let user = Auth.auth().currentUser {
+            let userId = user.uid
+            db.collection("users").document(userId).getDocument { document, error in
                 if let error = error {
-                    print("❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌❌Error creating user profile in Firestore: \(error.localizedDescription)")
+                    print("Error retrieving user data: \(error.localizedDescription)")
+                    self.userIsLoggedIn = false
+                    completion(nil)
+                    return
+                }
+                
+                if let document = document, document.exists {
+                    print("Fetched document data: \(document.data() ?? [:])") // Log raw data
+                    
+                    do {
+                        let fetchedUser = try document.data(as: User.self)
+                        self.currentUser = fetchedUser
+                        self.userIsLoggedIn = true
+                        completion(fetchedUser)
+                        print("Fetched user data: \(String(describing: fetchedUser))")
+                    } catch {
+                        print("Error decoding user data: \(error.localizedDescription)")
+                        self.userIsLoggedIn = false
+                        completion(nil)
+                    }
                 } else {
-                    print("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ User profile created successfully in Firestore!")
+                    print("No such document or user data missing.")
+                    self.userIsLoggedIn = false
+                    completion(nil)
                 }
             }
+        } else {
+            print("No user is signed in.")
+            self.userIsLoggedIn = false
+            completion(nil)
         }
     }
 }

@@ -8,9 +8,11 @@
 import Foundation
 import FirebaseFirestore
 
-struct Server: Identifiable {
+struct Server: Identifiable, Codable {
     @DocumentID var id: String?
     var name: String
     var image: String
     var users: [String]
+    var messageGroupId: String
 }
+
