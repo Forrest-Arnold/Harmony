@@ -46,12 +46,13 @@ struct ProfileIcon: View {
 }
 
 struct Username: View {
+    @EnvironmentObject var userManager: UserManager
     var body: some View {
         Button {
             // Open online status editor
         } label: {
             HStack {
-                Text("Username")
+                Text(userManager.currentUser?.username ?? "Missing")
                     .font(.title2)
                     .bold()
                 Text("v")
