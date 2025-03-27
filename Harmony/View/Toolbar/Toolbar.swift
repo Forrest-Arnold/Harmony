@@ -15,7 +15,7 @@ struct Toolbar: View {
                 HStack {
                     Spacer()
                     
-                    NavigationLink(destination: HarmonyHome()) {
+                    NavigationLink(destination: HarmonyHome().navigationBarBackButtonHidden()) {
                         VStack {
                             Image(systemName: "house.fill")
                                 .resizable()
@@ -43,7 +43,7 @@ struct Toolbar: View {
                     
                     Spacer(minLength: 60)
                     
-                    NavigationLink(destination: Profile()) {
+                    NavigationLink(destination: Profile().navigationBarBackButtonHidden()) {
                         VStack {
                             Image(systemName: "person.fill")
                                 .resizable()
